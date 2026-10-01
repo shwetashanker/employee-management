@@ -1,4 +1,5 @@
 import { useState } from "react";
+import EmployeeTable from "./EmployeeTable";
 
 const initialEmployees = [
   {
@@ -120,9 +121,9 @@ function EmployeeList() {
   }
 
   return (
-    <section>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1>Employees</h1>
+    <section className="mx-auto max-w-5xl px-4 py-8">
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <h1 className="text-4xl font-bold text-blue-600">Employees</h1>
         <button type="button" onClick={handleAddEmployee}>
           + Add Employee
         </button>
@@ -172,36 +173,12 @@ function EmployeeList() {
         placeholder="Search employees"
         aria-label="Search employees by name"
       />
-      <table>
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Department</th>
-            <th scope="col">Email</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredEmployees.map((employee) => (
-            <tr key={employee.id}>
-              <td>{employee.name}</td>
-              <td>{employee.department}</td>
-              <td>{employee.email}</td>
-              <td>
-                <button type="button" onClick={() => handleDeleteEmployee(employee.id)}>
-                  Delete
-                </button>
-                <button type="button" onClick={() => setSelectedEmployee(employee)}>
-                  View
-                </button>
-                <button type="button" onClick={() => handleEditEmployee(employee)}>
-                  Edit
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <EmployeeTable
+        employees={filteredEmployees}
+        onDelete={handleDeleteEmployee}
+        onView={setSelectedEmployee}
+        onEdit={handleEditEmployee}
+      />
       {selectedEmployee && (
         <section>
           <h2>Employee Details</h2>
