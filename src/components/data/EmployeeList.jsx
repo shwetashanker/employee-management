@@ -1,4 +1,5 @@
 import { useState } from "react";
+import EmployeeForm from "./EmployeeForm";
 import EmployeeTable from "./EmployeeTable";
 
 const initialEmployees = [
@@ -129,42 +130,13 @@ function EmployeeList() {
         </button>
       </div>
       {isAddFormVisible && (
-        <form onSubmit={handleSaveEmployee}>
-          <div>
-            <label htmlFor="employee-name">Name</label>
-            <input
-              id="employee-name"
-              name="name"
-              type="text"
-              value={newEmployee.name}
-              onChange={handleNewEmployeeChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="employee-department">Department</label>
-            <input
-              id="employee-department"
-              name="department"
-              type="text"
-              value={newEmployee.department}
-              onChange={handleNewEmployeeChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="employee-email">Email</label>
-            <input
-              id="employee-email"
-              name="email"
-              type="email"
-              value={newEmployee.email}
-              onChange={handleNewEmployeeChange}
-            />
-          </div>
-          {formError && <p role="alert">{formError}</p>}
-          <button type="submit">
-            {editingEmployee ? "Update Employee" : "Save"}
-          </button>
-        </form>
+        <EmployeeForm
+          employee={newEmployee}
+          error={formError}
+          isEditing={Boolean(editingEmployee)}
+          onChange={handleNewEmployeeChange}
+          onSubmit={handleSaveEmployee}
+        />
       )}
       <input
         type="search"
