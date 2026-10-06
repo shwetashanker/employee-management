@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmployeeForm from "./EmployeeForm";
 import EmployeeTable from "./EmployeeTable";
 
-const initialEmployees = [
+/**const initialEmployees = [
   {
     id: 1,
     name: "Ava Patel",
@@ -27,10 +27,10 @@ const initialEmployees = [
     department: "Finance",
     email: "daniel.okafor@example.com",
   },
-];
+];**/
 
 function EmployeeList() {
-  const [employees, setEmployees] = useState(initialEmployees);
+  const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
@@ -41,6 +41,13 @@ function EmployeeList() {
     email: "",
   });
   const [formError, setFormError] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:3001/employees")
+      .then((response) => response.json())
+      .then((data) => setEmployees(data));
+  }, []);
+
   const filteredEmployees = employees.filter((employee) =>
     employee.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
