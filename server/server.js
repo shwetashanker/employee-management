@@ -36,9 +36,23 @@ app.use(cors(
     origin: "http://localhost:5173",
   }
 ));
+app.use(express.json());
 
 app.get("/employees", (request, response) => {
   response.json(employees);
+});
+
+app.post("/employees", (request, response) => {
+  const { name, department, email } = request.body;
+  const newEmployee = {
+    id: Math.max(...employees.map((employee) => employee.id)) + 1,
+    name,
+    department,
+    email,
+  };
+
+  employees.push(newEmployee);
+  response.status(201).json(newEmployee);
 });
 
 app.listen(port, () => {

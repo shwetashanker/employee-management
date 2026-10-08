@@ -60,7 +60,7 @@ function EmployeeList() {
     }));
   }
 
-  function handleSaveEmployee(event) {
+  async function handleSaveEmployee(event) {
     event.preventDefault();
 
     const employeeToAdd = {
@@ -88,11 +88,23 @@ function EmployeeList() {
           : currentEmployee,
       );
     } else {
-      setEmployees((currentEmployees) => {
-        const nextId = Math.max(...currentEmployees.map((employee) => employee.id)) + 1;
+      try {
+        const response = await fetch("http://localhost:3001/employees", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(employeeToAdd),
+        });
 
-        return [...currentEmployees, { ...employeeToAdd, id: nextId }];
-      });
+        if (!response.ok) {
+          throw new Error("Unable to add employee");
+        }
+
+        const createdEmployee = await response.json();
+        setEmployees((currentEmployees) => [...currentEmployees, createdEmployee]);
+      } catch {
+        setFormError("Unable to add employee. Please try again.");
+        return;
+      }
     }
 
     setNewEmployee({ name: "", department: "", email: "" });
